@@ -69,6 +69,7 @@ class _VideoAppState extends State<VideoApp> {
           mainAxisSize: MainAxisSize.min,
           spacing: 16,
           children: <Widget>[
+            // Skip to end button
             FloatingActionButton(
               onPressed: () async {
                 final Duration end = _controller.value.duration;
@@ -79,6 +80,33 @@ class _VideoAppState extends State<VideoApp> {
               },
               child: const Icon(Icons.skip_next),
             ),
+
+            // Skip 10s button
+            FloatingActionButton(
+              onPressed: () async {
+                Duration? pos = await _controller.position;
+                if (pos == null) {
+                  return;
+                }
+                setState(() {
+                  _controller.seekTo(pos + Duration(seconds: 10));
+                });
+              },
+              child: Text('Skip 10s'),
+            ),
+
+            // Restart button
+            FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  _controller.seekTo(Duration.zero);
+                  _controller.play();
+                });
+              },
+              child: const Icon(Icons.replay),
+            ),
+
+            // Play/Pause button
             FloatingActionButton(
               onPressed: () {
                 setState(() {
